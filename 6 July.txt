@@ -1,0 +1,351 @@
+> db.Employee.drop();
+true
+> db.dropDatabase();
+{ "ok" : 1 }
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> use mydatabase
+switched to db mydatabase
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> db.createCollection("Product");
+{ "ok" : 1 }
+> db.Product.insertMany([{id:101,name:"TV",price:45000},{id:102,name:"AC",price:25000},{ id:103,name:"Table",price:5000},{ id:104,name:"chair",price:2000},{ id:105,name:"fridge",price:35000}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("62c5262eca09970c135ca61b"),
+                ObjectId("62c5262eca09970c135ca61c"),
+                ObjectId("62c5262eca09970c135ca61d"),
+                ObjectId("62c5262eca09970c135ca61e"),
+                ObjectId("62c5262eca09970c135ca61f")
+        ]
+}
+> db.Employee.find().pretty();
+> db.Product.find().pretty();
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61b"),
+        "id" : 101,
+        "name" : "TV",
+        "price" : 45000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61c"),
+        "id" : 102,
+        "name" : "AC",
+        "price" : 25000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61d"),
+        "id" : 103,
+        "name" : "Table",
+        "price" : 5000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61e"),
+        "id" : 104,
+        "name" : "chair",
+        "price" : 2000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61f"),
+        "id" : 105,
+        "name" : "fridge",
+        "price" : 35000
+}
+> db.product.find({price:{$gt:25000}}).pretty();
+> db.Product.find({price:{$gt:25000}}).pretty();
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61b"),
+        "id" : 101,
+        "name" : "TV",
+        "price" : 45000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61f"),
+        "id" : 105,
+        "name" : "fridge",
+        "price" : 35000
+}
+> db.Product.find({price:{$gte:25000}}).pretty();
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61b"),
+        "id" : 101,
+        "name" : "TV",
+        "price" : 45000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61c"),
+        "id" : 102,
+        "name" : "AC",
+        "price" : 25000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61f"),
+        "id" : 105,
+        "name" : "fridge",
+        "price" : 35000
+}
+> db.Product.find({price:{$lt:25000}}).pretty();
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61d"),
+        "id" : 103,
+        "name" : "Table",
+        "price" : 5000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61e"),
+        "id" : 104,
+        "name" : "chair",
+        "price" : 2000
+}
+> db.Product.find({price:{$lte:25000}}).pretty();
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61c"),
+        "id" : 102,
+        "name" : "AC",
+        "price" : 25000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61d"),
+        "id" : 103,
+        "name" : "Table",
+        "price" : 5000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61e"),
+        "id" : 104,
+        "name" : "chair",
+        "price" : 2000
+}
+> db.Product.find({name:"TV"});
+{ "_id" : ObjectId("62c5262eca09970c135ca61b"), "id" : 101, "name" : "TV", "price" : 45000 }
+> db.Product.find({price:5000});
+{ "_id" : ObjectId("62c5262eca09970c135ca61d"), "id" : 103, "name" : "Table", "price" : 5000 }
+> db.Product.find({price:{$ne:35000}}).pretty();
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61b"),
+        "id" : 101,
+        "name" : "TV",
+        "price" : 45000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61c"),
+        "id" : 102,
+        "name" : "AC",
+        "price" : 25000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61d"),
+        "id" : 103,
+        "name" : "Table",
+        "price" : 5000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61e"),
+        "id" : 104,
+        "name" : "chair",
+        "price" : 2000
+}
+> db.Product.find({$and:[{name:"TV"},{price:45000}]}).pretty();
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61b"),
+        "id" : 101,
+        "name" : "TV",
+        "price" : 45000
+}
+> db.Product.find({$and:[{name:"TV"},{price:2000}]}).pretty();
+> db.Product.find({$or:[{name:"TV"},{price:2000}]}).pretty();
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61b"),
+        "id" : 101,
+        "name" : "TV",
+        "price" : 45000
+}
+{
+        "_id" : ObjectId("62c5262eca09970c135ca61e"),
+        "id" : 104,
+        "name" : "chair",
+        "price" : 2000
+}
+> db.Product.find({price:{$not:{$gt:5000}}}).pretty();
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a16"),
+        "id" : 103,
+        "name" : "Table",
+        "price" : 5000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a17"),
+        "id" : 104,
+        "name" : "chair",
+        "price" : 2000
+}
+> db.Product.update({name:"Table"},{$set:{name:"Office Furniture"}});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> > db.Product.find().pretty();
+uncaught exception: SyntaxError: expected expression, got '>' :
+@(shell):1:0
+> db.Product.find().pretty();
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a14"),
+        "id" : 101,
+        "name" : "TV",
+        "price" : 45000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a15"),
+        "id" : 102,
+        "name" : "AC",
+        "price" : 25000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a16"),
+        "id" : 103,
+        "name" : "Office Furniture",
+        "price" : 5000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a17"),
+        "id" : 104,
+        "name" : "chair",
+        "price" : 2000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a18"),
+        "id" : 105,
+        "name" : "fridge",
+        "price" : 35000
+}
+> db.Product.findOneAndUpdate({price:2000},{$set:{price:22000}});
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a17"),
+        "id" : 104,
+        "name" : "chair",
+        "price" : 2000
+}
+> db.Product.find().pretty();
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a14"),
+        "id" : 101,
+        "name" : "TV",
+        "price" : 45000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a15"),
+        "id" : 102,
+        "name" : "AC",
+        "price" : 25000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a16"),
+        "id" : 103,
+        "name" : "Office Furniture",
+        "price" : 5000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a17"),
+        "id" : 104,
+        "name" : "chair",
+        "price" : 22000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a18"),
+        "id" : 105,
+        "name" : "fridge",
+        "price" : 35000
+}
+
+> db.Product.updateMany({price:{$gt:30000}},{$set:{price:50000}});
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+> db.Product.find().pretty();
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a14"),
+        "id" : 101,
+        "name" : "TV",
+        "price" : 50000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a15"),
+        "id" : 102,
+        "name" : "AC",
+        "price" : 25000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a16"),
+        "id" : 103,
+        "name" : "Office Furniture",
+        "price" : 5000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a17"),
+        "id" : 104,
+        "name" : "chair",
+        "price" : 22000
+}
+{
+        "_id" : ObjectId("62c52bc9bb51caf752f88a18"),
+        "id" : 105,
+        "name" : "fridge",
+        "price" : 50000
+}
+> db.Product.remove({id:101})
+WriteResult({ "nRemoved" : 1 })
+> db.product.remove({});
+WriteResult({ "nRemoved" : 0 })
+> db.Product.remove({});
+WriteResult({ "nRemoved" : 4 })
+> db.Product.remove({id:101})
+WriteResult({ "nRemoved" : 0 })
+> db.Product.find().pretty();
+> db.Product.insertMany([{id:101,name:"TV",price:45000},{id:102,name:"AC",price:25000},{ id:103,name:"Table",price:5000},{ id:104,name:"chair",price:2000},{ id:105,name:"fridge",price:35000}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("62c55171bb51caf752f88a19"),
+                ObjectId("62c55171bb51caf752f88a1a"),
+                ObjectId("62c55171bb51caf752f88a1b"),
+                ObjectId("62c55171bb51caf752f88a1c"),
+                ObjectId("62c55171bb51caf752f88a1d")
+        ]
+}
+> db.Product.find({},{"name":1})
+{ "_id" : ObjectId("62c55171bb51caf752f88a19"), "name" : "TV" }
+{ "_id" : ObjectId("62c55171bb51caf752f88a1a"), "name" : "AC" }
+{ "_id" : ObjectId("62c55171bb51caf752f88a1b"), "name" : "Table" }
+{ "_id" : ObjectId("62c55171bb51caf752f88a1c"), "name" : "chair" }
+{ "_id" : ObjectId("62c55171bb51caf752f88a1d"), "name" : "fridge" }
+> db.Product.find({},{"name":1,_id:0})
+{ "name" : "TV" }
+{ "name" : "AC" }
+{ "name" : "Table" }
+{ "name" : "chair" }
+{ "name" : "fridge" }
+> db.Product.find({},{"name":1,_id:0}).limit(4);
+{ "name" : "TV" }
+{ "name" : "AC" }
+{ "name" : "Table" }
+{ "name" : "chair" }
+> db.Product.find({},{"name":1,_id:0}).sort({"name":-1});
+{ "name" : "fridge" }
+{ "name" : "chair" }
+{ "name" : "Table" }
+{ "name" : "TV" }
+{ "name" : "AC" }
+> db.Product.find({},{"name":1,_id:0}).sort({"name":1});
+{ "name" : "AC" }
+{ "name" : "TV" }
+{ "name" : "Table" }
+{ "name" : "chair" }
+{ "name" : "fridge" }
+> db.Product.find({},{"name":1,_id:0}).sort({"name":-1});
+{ "name" : "fridge" }
+{ "name" : "chair" }
+{ "name" : "Table" }
+{ "name" : "TV" }
+{ "name" : "AC" }
+

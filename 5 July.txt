@@ -1,0 +1,79 @@
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+mydb    0.000GB
+> db.createCollection("Employee");
+{
+        "ok" : 0,
+        "errmsg" : "Collection already exists. NS: mydb.Employee",
+        "code" : 48,
+        "codeName" : "NamespaceExists"
+}
+> db.Employee.insert({id:10011,name:"Ajay",salary:27000})
+WriteResult({ "nInserted" : 1 })
+> db.Employee.find().pretty();
+{
+        "_id" : ObjectId("62c42340ca09970c135ca616"),
+        "id" : 10011,
+        "name" : "Ajay",
+        "salary" : 27000
+}
+> db.Employee.insert({id:10012,name:"Kash",salary:77000})
+WriteResult({ "nInserted" : 1 })
+> db.Employee.find().pretty();
+{
+        "_id" : ObjectId("62c42340ca09970c135ca616"),
+        "id" : 10011,
+        "name" : "Ajay",
+        "salary" : 27000
+}
+{
+        "_id" : ObjectId("62c4237cca09970c135ca617"),
+        "id" : 10012,
+        "name" : "Kash",
+        "salary" : 77000
+}
+> db.Employee.insertMany([])
+{ "acknowledged" : true, "insertedIds" : [ ] }
+> db.Employee.insertMany([{id:10013,name:"ash",salary:67000},{id:10014,name:"shash",salary:79000},{id:10015,name:"Mike",salary:90000}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("62c42625ca09970c135ca618"),
+                ObjectId("62c42625ca09970c135ca619"),
+                ObjectId("62c42625ca09970c135ca61a")
+        ]
+}
+> db.Employee.find().pretty();
+{
+        "_id" : ObjectId("62c42340ca09970c135ca616"),
+        "id" : 10011,
+        "name" : "Ajay",
+        "salary" : 27000
+}
+{
+        "_id" : ObjectId("62c4237cca09970c135ca617"),
+        "id" : 10012,
+        "name" : "Kash",
+        "salary" : 77000
+}
+{
+        "_id" : ObjectId("62c42625ca09970c135ca618"),
+        "id" : 10013,
+        "name" : "ash",
+        "salary" : 67000
+}
+{
+        "_id" : ObjectId("62c42625ca09970c135ca619"),
+        "id" : 10014,
+        "name" : "shash",
+        "salary" : 79000
+}
+{
+        "_id" : ObjectId("62c42625ca09970c135ca61a"),
+        "id" : 10015,
+        "name" : "Mike",
+        "salary" : 90000
+}
+>
